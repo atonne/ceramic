@@ -3,20 +3,28 @@ import Button from '../Button/button';
 import React, { useState, useRef, useEffect } from 'react';
 
 const cx = classNames;
-function ShotClock() {
+function ShotClock({ onData, statusHome, buttonStatusHome }) {
     const [timeLeft, setTimeLeft] = useState(24000);
-    const [status, setStatus] = useState('stop');
-    const [buttonStatus, setButtonStatus] = useState('Start');
+    const [status, setStatus] = useState(statusHome);
+    const [buttonStatus, setButtonStatus] = useState(buttonStatusHome);
     const intervalRef = useRef(null);
-
+    console.log(buttonStatusHome);
     useEffect(() => {
+        setStatus(statusHome);
+        setButtonStatus(buttonStatusHome);
         intervalRef.current = setInterval(() => {
             setTimeLeft((timeLeft) => timeLeft - 100);
         }, 100);
-        if (timeLeft < 10) clearTimeout(intervalRef.current);
-        if (status === 'stop') clearTimeout(intervalRef.current);
+        if (status === 'stop') {
+            clearTimeout(intervalRef.current);
+        }
+
+        if (timeLeft < 10) {
+            onData('stop', 'Start');
+            clearTimeout(intervalRef.current);
+        }
         return () => clearInterval(intervalRef.current);
-    }, [status, timeLeft]);
+    }, [status, timeLeft, statusHome, buttonStatusHome]);
     const renderTime = () => {
         const seconds = Math.floor((timeLeft % 60000) / 1000)
             .toString()
@@ -34,8 +42,18 @@ function ShotClock() {
             return <>{seconds}</>;
         }
     };
-    const handleOnClick = () => {
-        console.log(1);
+    // const handleOnClick = () => {
+
+    // };
+    const handleRestart24 = () => {
+        setTimeLeft(24000);
+        setStatus('stop');
+        setButtonStatus('Resume');
+    };
+    const handleRestart14 = () => {
+        setTimeLeft(14000);
+        setStatus('stop');
+        setButtonStatus('Resume');
     };
     return (
         <div className={cx('flex flex-col ')}>
@@ -55,11 +73,13 @@ function ShotClock() {
 
                 <div className={cx('w-1/3 flex flex-col h-20 justify-around')}>
                     <Button
+                        onClick={handleRestart24}
                         className={cx(' w-28 bg-black flex justify-center border border-[#10FF00] hover:bg-opacity-10')}
                     >
                         Restart 24s
                     </Button>
                     <Button
+                        onClick={handleRestart14}
                         className={cx('w-28 bg-black flex justify-center border border-[#E5A736] hover:bg-opacity-10')}
                     >
                         Restart 14s
@@ -68,7 +88,18 @@ function ShotClock() {
             </div>
             <div className={cx('mt-5  w-full flex justify-center')}>
                 <Button
-                    onClick={handleOnClick}
+                    onClick={() => {
+                        if (status === '') {
+                            // setTrigger(false);
+
+                            onData('stop', 'Resume');
+                        } else {
+                            setStatus('');
+                            // setTrigger(false);
+                            setButtonStatus('Pause');
+                            onData('', 'Pause');
+                        }
+                    }}
                     className={cx('mr-5 flex justify-center  bg-black border w-[80px] h-8 hover:bg-opacity-20')}
                 >
                     {buttonStatus}

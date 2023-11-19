@@ -1,4 +1,6 @@
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+
 import Logo from '~/components/Logo';
 import Clock from '~/components/Clock';
 import Score from '~/components/Score';
@@ -8,12 +10,32 @@ import { tImage } from '~/image';
 
 const cx = classNames;
 function Home() {
+    const [status, setStatus] = useState('stop');
+    const [buttonStatus, setButtonStatus] = useState('Start');
+    // const [key, setKey] = useState(0);
+    const [timeShotClock, setTimeShotClock] = useState();
+    const [trigger, setTrigger] = useState(24000);
+    const handleOnChangeStatus = (data, getButtonStatus, time) => {
+        setStatus(data);
+        setButtonStatus(getButtonStatus);
+        console.log(getButtonStatus);
+        if (!!time) setTimeShotClock(24000);
+        // setKey((prevKey) => prevKey + 1);
+    };
+    const intervalRef = useRef(null);
+
     return (
         <div className={cx('bg-[#313131]   text-white h-full flex flex-col')}>
             <div className={cx('flex h-1/3')}>
                 <Logo name="Ceramic" img={tImage.CeramicLogo} />
                 <div className={cx('w-2/4 ')}>
-                    <Clock />
+                    <Clock
+                        time={600000}
+                        triggerHome={trigger}
+                        buttonStatusHome={buttonStatus}
+                        statusHome={status}
+                        onData={handleOnChangeStatus}
+                    />
                 </div>
                 <Logo name="IUBC" img={tImage.IuLogo} />
             </div>
@@ -21,7 +43,7 @@ function Home() {
                 <Score />
                 <div className={cx('w-2/4 flex flex-col items-center')}>
                     <Period />
-                    <ShotClock />
+                    <ShotClock buttonStatusHome={buttonStatus} statusHome={status} onData={handleOnChangeStatus} />
                 </div>
                 <Score />
             </div>
