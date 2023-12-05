@@ -3,13 +3,14 @@ import Button from '../Button/button';
 import React, { useState, useRef, useEffect } from 'react';
 
 const cx = classNames;
-function ShotClock({ onData, statusHome, buttonStatusHome }) {
-    const [timeLeft, setTimeLeft] = useState(24000);
+function ShotClock({ time, onData, statusHome, buttonStatusHome }) {
+    const [timeLeft, setTimeLeft] = useState(time);
     const [status, setStatus] = useState(statusHome);
     const [buttonStatus, setButtonStatus] = useState(buttonStatusHome);
     const intervalRef = useRef(null);
     console.log(buttonStatusHome);
     useEffect(() => {
+        setTimeLeft(time);
         setStatus(statusHome);
         setButtonStatus(buttonStatusHome);
         intervalRef.current = setInterval(() => {
@@ -24,7 +25,7 @@ function ShotClock({ onData, statusHome, buttonStatusHome }) {
             clearTimeout(intervalRef.current);
         }
         return () => clearInterval(intervalRef.current);
-    }, [status, timeLeft, statusHome, buttonStatusHome]);
+    }, [status, time, onData, timeLeft, statusHome, buttonStatusHome]);
     const renderTime = () => {
         const seconds = Math.floor((timeLeft % 60000) / 1000)
             .toString()
