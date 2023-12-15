@@ -14,8 +14,19 @@ const cx = classNames;
 function Home() {
     const [status, setStatus] = useState('stop');
     const [buttonStatus, setButtonStatus] = useState('Start');
-    // const [key, setKey] = useState(0);
-    const [timeShotClock, setTimeShotClock] = useState();
+    const [isActiveButton1, setIsActiveButton1] = useState(true);
+    const [isActiveButton2, setIsActiveButton2] = useState(false);
+
+    const activateButton1 = () => {
+        setIsActiveButton1(true);
+        setIsActiveButton2(false);
+    };
+
+    const activateButton2 = () => {
+        setIsActiveButton1(false);
+        setIsActiveButton2(true);
+    };
+    const [timeShotClock, setTimeShotClock] = useState(24000);
     const [matchTime, setMatchTime] = useState(600000);
     const [trigger, setTrigger] = useState(24000);
     const handleOnChangeStatus = (data, getButtonStatus, time) => {
@@ -57,7 +68,7 @@ function Home() {
         let inputValue = e.target.value;
 
         // Chỉ giữ lại hai chữ số đầu tiên
-        inputValue = inputValue.slice(0, 2);
+        inputValue = inputValue.slice(0, 1);
 
         // Loại bỏ các ký tự không phải số
         inputValue = inputValue.replace(/[^0-9]/g, '');
@@ -66,9 +77,12 @@ function Home() {
         setMiliSecondNumberValue(inputValue);
     };
     const handleOnClickApply = () => {
-        setMatchTime(60000 * minuteValue);
-        setTimeShotClock(1000 * secondValue);
-        console.log(1);
+        if (isActiveButton1 === true) {
+            setMatchTime(60000 * minuteValue + 1000 * secondValue + 100 * miliSecondValue);
+        } else if (isActiveButton2 === true) {
+            setTimeShotClock(1000 * secondValue + 100 * miliSecondValue);
+            // setTimeShotClock((prev) => prev +);
+        }
     };
     const openModal = () => {
         setIsModalOpen(true);
@@ -90,7 +104,14 @@ function Home() {
                             CONFIGURATION
                         </div>
                         <div className="absolute w-[314px] h-[60px] top-[146px] left-[50px]">
-                            <div className="absolute w-[251px] top-[12px] left-0 [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]">
+                            <div
+                                onClick={activateButton1}
+                                className={
+                                    isActiveButton1
+                                        ? "absolute w-[251px] top-[12px] left-0 [font-family:'Quantico-Bold',Helvetica] font-bold text-[#E5A736] text-[20px] tracking-[0] leading-[normal]"
+                                        : "absolute w-[251px] top-[12px] left-0 [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]  cursor-pointer"
+                                }
+                            >
                                 Quarter period :
                             </div>
                             <div className="w-[71px] h-[59px] top-0 left-[244px] border-[3px] border-solid absolute bg-black border-white" />
@@ -107,7 +128,15 @@ function Home() {
                         <div className="absolute w-[127px] top-[241px] left-[453px] [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]">
                             second(s)
                         </div>
-                        <div className="absolute w-[227px] top-[241px] left-[50px] [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]">
+                        <div
+                            onClick={activateButton2}
+                            // className={isActiveButton1 ? 'active' : 'inactive'}
+                            className={
+                                isActiveButton2
+                                    ? "absolute w-[227px] top-[241px] left-[50px] [font-family:'Quantico-Bold',Helvetica] font-bold text-[#E5A736] text-[20px] tracking-[0] leading-[normal]"
+                                    : "absolute w-[227px] top-[241px] left-[50px] [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]  cursor-pointer"
+                            }
+                        >
                             Shot clock period :
                         </div>
                         <div className="absolute w-[205px] top-[328px] left-[453px] [font-family:'Quantico-Bold',Helvetica] font-bold text-white text-[20px] tracking-[0] leading-[normal]">
@@ -180,34 +209,30 @@ function Home() {
                     <div className={cx('text-6xl')}>FOUL</div>
                 </div>
                 <div className={cx('flex w-full justify-around')}>
-                    <div
+                    <input
+                        value={1}
                         className={cx(
                             'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
-                    >
-                        4
-                    </div>
-                    <div
+                    ></input>
+                    <input
+                        value={1}
                         className={cx(
                             'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
-                    >
-                        4
-                    </div>{' '}
-                    <div
+                    ></input>{' '}
+                    <input
+                        value={1}
                         className={cx(
                             'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
-                    >
-                        4
-                    </div>{' '}
-                    <div
+                    ></input>{' '}
+                    <input
+                        value={1}
                         className={cx(
                             'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
-                    >
-                        4
-                    </div>
+                    ></input>
                 </div>
             </div>
         </div>
