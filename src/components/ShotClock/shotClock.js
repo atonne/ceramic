@@ -15,16 +15,23 @@ function ShotClock({ time, onData, statusHome, buttonStatusHome }) {
         // setTimeLeft(time);
         setStatus(statusHome);
         setButtonStatus(buttonStatusHome);
-        intervalRef.current = setInterval(() => {
-            setTimeLeft((timeLeft) => timeLeft - 100);
-        }, 100);
+
+        if (timeLeft < 10000) {
+            intervalRef.current = setInterval(() => {
+                setTimeLeft((timeLeft) => timeLeft - 100);
+            }, 100);
+        } else {
+            intervalRef.current = setInterval(() => {
+                setTimeLeft((timeLeft) => timeLeft - 1000);
+            }, 1000);
+        }
 
         if (status === 'stop') {
             clearTimeout(intervalRef.current);
         }
-
         if (timeLeft < 10) {
             onData('stop', 'Start');
+            setTimeLeft(24000);
             clearTimeout(intervalRef.current);
         }
         return () => clearInterval(intervalRef.current);
