@@ -8,14 +8,17 @@ function ShotClock({ time, onData, statusHome, buttonStatusHome }) {
     const [status, setStatus] = useState(statusHome);
     const [buttonStatus, setButtonStatus] = useState(buttonStatusHome);
     const intervalRef = useRef(null);
-    console.log(buttonStatusHome);
     useEffect(() => {
         setTimeLeft(time);
+    }, [time]);
+    useEffect(() => {
+        // setTimeLeft(time);
         setStatus(statusHome);
         setButtonStatus(buttonStatusHome);
         intervalRef.current = setInterval(() => {
             setTimeLeft((timeLeft) => timeLeft - 100);
         }, 100);
+
         if (status === 'stop') {
             clearTimeout(intervalRef.current);
         }
