@@ -40,6 +40,11 @@ function Home() {
     const [miliSecondValue, setMiliSecondNumberValue] = useState(40);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [foulLeft, setFoulLeft] = useState(1);
+    const [timeOutLeft, setTimeOutLeft] = useState(1);
+    const [foulRight, setFoulRight] = useState(1);
+    const [timeOutRight, setTimeOutRight] = useState(1);
+
     const handleInputChangeMinutes = (e) => {
         let inputValue = e.target.value;
 
@@ -84,6 +89,42 @@ function Home() {
             // setTimeShotClock((prev) => prev +);
         }
     };
+
+    const handleFoulLeftChange = (e) => {
+        let data = e.target.value;
+        data = data.slice(0, 1);
+
+        // Loại bỏ các ký tự không phải số
+        data = data.replace(/[^0-9]/g, '');
+
+        setFoulLeft(data);
+    };
+    const handleFoulRightChange = (e) => {
+        let data = e.target.value;
+        data = data.slice(0, 1);
+
+        // Loại bỏ các ký tự không phải số
+        data = data.replace(/[^0-9]/g, '');
+
+        setFoulRight(data);
+    };
+    const handleTimeOutRightChange = (e) => {
+        let data = e.target.value;
+        data = data.slice(0, 1);
+
+        // Loại bỏ các ký tự không phải số
+        data = data.replace(/[^0-9]/g, '');
+        setTimeOutRight(data);
+    };
+    const handleTimeOutLeftChange = (e) => {
+        let data = e.target.value;
+        data = data.slice(0, 1);
+
+        // Loại bỏ các ký tự không phải số
+        data = data.replace(/[^0-9]/g, '');
+        setTimeOutLeft(data);
+    };
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -210,27 +251,31 @@ function Home() {
                 </div>
                 <div className={cx('flex w-full justify-around')}>
                     <input
-                        value={1}
+                        value={foulLeft}
+                        onChange={handleFoulLeftChange}
                         className={cx(
-                            'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
+                            'w-28 flex items-center text-8xl text-center justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
                     ></input>
                     <input
-                        value={1}
+                        value={timeOutLeft}
+                        onChange={handleTimeOutLeftChange}
                         className={cx(
-                            'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
+                            'w-28 flex items-center text-8xl text-center justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
                     ></input>{' '}
                     <input
-                        value={1}
+                        value={foulRight}
+                        onChange={handleFoulRightChange}
                         className={cx(
-                            'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
+                            'w-28 flex items-center text-8xl text-center justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
                     ></input>{' '}
                     <input
-                        value={1}
+                        value={timeOutRight}
+                        onChange={handleTimeOutRightChange}
                         className={cx(
-                            'w-28 flex items-center text-8xl text-left justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
+                            'p-0 w-28 flex items-center text-8xl text-center justify-center border-4 bg-black rounded-lg font-number text-[#FF0000]',
                         )}
                     ></input>
                 </div>
